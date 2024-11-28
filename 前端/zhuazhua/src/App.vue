@@ -189,17 +189,7 @@ const 上传前 = (rawFile) => {
   }
   return false
 }
-const 鼠标历史 = {}
-const 鼠标指向 = (event) => {
-  if (鼠标历史.x === event.offsetX && 鼠标历史.y === event.offsetY) {
-    return
-  }
-  鼠标历史.x = event.offsetX
-  鼠标历史.y = event.offsetY
-  x.value = event.offsetX
-  y.value = event.offsetY
-  显示颜色(x.value, y.value)
-}
+
 const 显示颜色 = (x, y) => {
   let rgb = getColor(x, y)
   颜色.value.x = x
@@ -219,6 +209,35 @@ const 显示颜色 = (x, y) => {
   }
 }
 
+const debounce = (func, wait, immediate) => {
+  let timeout; // 定义一个计时器变量，用于延迟执行函数
+  return function (...args) { // 返回一个包装后的函数
+    const context = this; // 保存函数执行上下文对象
+    const later = function () { // 定义延迟执行的函数
+      timeout = null; // 清空计时器变量
+      if (!immediate) func.apply(context, args); // 若非立即执行，则调用待防抖函数
+    };
+    const callNow = immediate && !timeout; // 是否立即调用函数的条件
+    clearTimeout(timeout); // 清空计时器
+    timeout = setTimeout(later, wait); // 创建新的计时器，延迟执行函数
+    if (callNow) func.apply(context, args); // 如果满足立即调用条件，则立即执行函数
+  };
+}
+
+const 延迟显示颜色 = debounce(显示颜色, 20, false);
+
+const 鼠标历史 = {}
+const 鼠标指向 = (event) => {
+  if (鼠标历史.x === event.offsetX && 鼠标历史.y === event.offsetY) {
+    return
+  }
+  鼠标历史.x = event.offsetX
+  鼠标历史.y = event.offsetY
+  x.value = event.offsetX
+  y.value = event.offsetY
+  延迟显示颜色(x.value, y.value);
+  // 显示颜色(x.value, y.value)
+}
 
 const addTab = (名称, 图片路径) => {
   const newTabName = `${++标签页数量}`
