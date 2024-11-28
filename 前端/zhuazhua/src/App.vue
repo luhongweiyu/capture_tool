@@ -13,7 +13,7 @@
       <br />
       <textarea v-model="生成内容" cols="50" rows="6"></textarea>
     </div>
-    <br/>
+    <br />
     <!-- {{ 坐标a.x }},{{ 坐标a.y }} -->
     <!-- {{ 坐标s.x }},{{ 坐标s.y }} -->
     <div style="display: inline-block;width: 50px;">
@@ -60,7 +60,7 @@
   <div style="top: 0%;right: 0%; position: fixed;border: #000000 5px solid;">
     <button @click="清除">清除</button>
     坐标:{{ 颜色.x }},{{ 颜色.y }}颜色:{{ 颜色.r }}{{ 颜色.g }}{{ 颜色.b }}
-    <br/>
+    <br />
     q:
     <input v-model="坐标a.x" style="width:50px;" />
     <input v-model="坐标a.y" style="width:50px;" />
@@ -189,9 +189,9 @@ const 上传前 = (rawFile) => {
   }
   return false
 }
-const 鼠标历史={}
+const 鼠标历史 = {}
 const 鼠标指向 = (event) => {
-  if ( 鼠标历史.x === event.offsetX && 鼠标历史.y === event.offsetY ){
+  if (鼠标历史.x === event.offsetX && 鼠标历史.y === event.offsetY) {
     return
   }
   鼠标历史.x = event.offsetX
@@ -286,15 +286,19 @@ const 按下键盘 = (event: all) => {
   if (key === 'ArrowUp' || keyCode === 38 || keyCode === 87) {
     y.value = y.value - 1
     显示颜色(x.value, y.value)
+    event.preventDefault();
   } else if (key === 'ArrowDown' || keyCode === 40 || keyCode === 83) {
     y.value = y.value + 1
     显示颜色(x.value, y.value)
+    event.preventDefault();
   } else if (key === 'ArrowLeft' || keyCode === 37 || keyCode === 65) {
     x.value = x.value - 1
     显示颜色(x.value, y.value)
+    event.preventDefault();
   } else if (key === 'ArrowRight' || keyCode === 39 || keyCode === 68) {
     x.value = x.value + 1
     显示颜色(x.value, y.value)
+    event.preventDefault();
   } else if (key === 'q' || keyCode === 81) {
     console.log('q', x.value)
     坐标a.value.x = x.value
@@ -308,6 +312,7 @@ const 按下键盘 = (event: all) => {
     console.log(event)
     let c = 颜色.value
     已选颜色.value.push({ 选中: true, x: c.x, y: c.y, color: '' + c.r + c.g + c.b })
+    event.preventDefault();
 
   } else if (key === 'Enter' || keyCode === 13) {
     生成()
